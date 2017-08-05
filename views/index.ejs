@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>直播之窗 - 直播搜索引擎</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/stylesheets/pure-min.css' />
+    <link rel='stylesheet' href='/lib/remodal/remodal.css' />
+    <link rel='stylesheet' href='/lib/remodal/remodal-default-theme.css' />
+  </head>
+  <body>
+    <div class="header">
+      <div class="home-menu pure-menu pure-menu-horizontal clearfix">
+        <a class="pure-menu-heading" href="/">Live Window</a>
+        
+        <ul class="pure-menu-list">
+            <li class="pure-menu-item pure-menu-selected"><a href="/" class="pure-menu-link">首页</a></li>
+            <li class="pure-menu-item"><a href="javascript:alert('开发中，敬请期待')" class="pure-menu-link">数据分析</a></li>
+            <li class="pure-menu-item"><a href="#reward" class="pure-menu-link">打赏站长</a></li>
+        </ul>
+        <div class="search-info">
+          <span class="parent">
+            <input type="text" class="txt j-flag" id="searchInput" <% if (keyword !== '') { %>value="<%=keyword%>"<% } %> style="opacity: 1;">
+            <label class="ph j-flag" id="searchHint">直播标题/主播名</label>
+          </span>  
+        </div>
+      </div>
+    </div>
+    <div class="content">
+      <div class="filter-info">
+          <ul class="sorts">
+            <li class="sort">
+              <a class="first active" href="#">人气从高到低</a>
+            </li>
+            <li class="sort dropdown">
+              <a <% if (platform && platform !== '') { %>class="active"<% } %> href="#">平台<% if (platform && platform !== '') { %>:<%=platform%><% } %></a>
+              <ul class="droplist">
+                <li class="sort">
+                  <a href="javascript:void(0)" data-platform="" class="platformChange">全部平台</a>
+                </li>
+                <li class="sort">
+                  <a href="javascript:void(0)" data-platform="douyu" class="platformChange">斗鱼</a>
+                </li>
+                <li class="sort">
+                  <a href="javascript:void(0)" data-platform="quanmin" class="platformChange">全民</a>
+                </li>
+                <li class="sort">
+                  <a href="javascript:void(0)" data-platform="xiongmao" class="platformChange">熊猫</a>
+                </li>
+                <li class="sort">
+                  <a href="javascript:void(0)" data-platform="zhanqi" class="platformChange">战旗</a>
+                </li>
+                <li class="sort">
+                  <a href="javascript:void(0)" data-platform="longzhu" class="platformChange">龙珠</a>
+                </li>
+                <li class="sort">
+                  <a href="javascript:void(0)" data-platform="huomao" class="platformChange">火猫</a>
+                </li>
+              </ul>
+            </li>
+            <li class="sort dropdown">
+              <a <% if (category !== '') { %>class="active"<% } %> href="#">分类<% if (category !== '') { %>:<%=category%><% } %></a>
+              <ul class="droplist">
+                <li class="sort">
+                  <a href="javascript:void(0)" data-category="" class="categoryChange">全部分类</a>
+                </li>
+                <%for (var i=0;i<categorys.length;i++){%>
+                <li class="sort">
+                  <a href="javascript:void(0)" data-category="<%=categorys[i].category%>" class="categoryChange"><%=categorys[i].category%></a>
+                </li>
+                <%}%>
+              </ul>
+            </li>
+          </ul>
+      </div>
+      <ul id="live-list-contentbox" class="play-list clearfix">
+        <%for (var i=0;i<lives.length;i++){%>
+        <li>
+            <a class="play-list-link" href="<%=lives[i].url%>" title="<%=lives[i].title%>" target="_blank">
+                <span class="imgbox">
+                    <span class="imgbox-corner-mark"></span>
+                    <b></b>
+                    <img src="<%=lives[i].imageUrl%>" style="display: block;">
+                    <img class="platform-logo" src="/images/platform_logo/<%=lives[i].platform%>.png">
+                </span>
+                <div class="mes">
+                    <div class="mes-tit">
+                        <h3 class="ellipsis"><%=lives[i].title%></h3>
+                        <span class="tag ellipsis"><%=lives[i].category%></span>
+                    </div>
+                    <p>
+                      <span class="dy-name ellipsis"><%=lives[i].author%></span>
+                      <span class="dy-num"><%=lives[i].personNum%></span>
+                    </p>
+                </div>
+            </a>
+        </li>
+        <%}%>
+      </ul>
+      <div class="tcd-page-code">
+        <a href="javascript:void(0)" data-page="<%=pageNum-1%>" class="pageChange shark-pager-prev
+          <% if (pageNum <= 1) { %> shark-pager-disable shark-pager-disable-prev <% } %>">上一页</a>
+        <%for (var i = startPageNum;i <= endPageNum;i++){%>
+        <a href="javascript:void(0)" data-page="<%=i%>" class="pageChange shark-pager-item <% if (i === pageNum) { %>current<% } %>"><%=i%></a>
+        <%}%>
+        <a href="javascript:void(0)" data-page="<%=pageNum+1%>" class="pageChange shark-pager-next
+          <% if (pageNum >= pageTotalCount) { %> shark-pager-disable shark-pager-disable-next <% } %>">下一页</a>
+        <span class="jumppage">跳转到：</span><input id="pageJumpInput" class="jumptxt" name="" type="text"><a id="pageJumpBt" href="javascript:void(0)" class="pageChange shark-pager-submit">GO</a>
+      </div>
+    </div>
+
+    <div class="remodal zhifuqr" data-remodal-id="reward">
+      <button data-remodal-action="close" class="remodal-close"></button>
+      <h2>感谢您的支持，我会继续努力的！</h2>
+      <img class="qr-img" src="/images/zhifubao_qr.png" alt="">
+      <p class="tip">打开支付宝扫一扫,就可进行扫码打赏哦~</p>
+    </div>
+
+    <script src="https://cdn.staticfile.org/jquery/1.12.4/jquery.min.js"></script>
+    <script src="/lib/remodal/remodal.min.js"></script>
+    <script src="/javascripts/index.js"></script>
+  </body>
+</html>

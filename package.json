@@ -1,9 +1,10 @@
 {
   "name": "livewindow",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "nodemon --inspect ./bin/www"
+    "dev": "cross-env NODE_ENV=\"dev\" nodemon --inspect ./bin/www",
+    "prod": "cross-env NODE_ENV=\"prod\" node ./bin/www"
   },
   "dependencies": {
     "body-parser": "~1.17.1",
@@ -19,6 +20,7 @@
     "superagent": "^3.5.2"
   },
   "devDependencies": {
-    "nodemon": "^1.11.0"
+    "nodemon": "^1.11.0",
+    "cross-env": "^5.0.3"
   }
 }

@@ -1,14 +1,8 @@
 var mysql = require('mysql');
+let mysqlConfig = require('../config').mysqlConfig[process.env.NODE_ENV]
 
 //创建连接池
-var pool  = mysql.createPool({
-    user : 'root',
-    host : 'localhost',
-    port : 3306,
-    password : 'Aa111111',
-    database : 'livewindow',
-    charset : 'utf8mb4'
-});
+var pool  = mysql.createPool(mysqlConfig);
 
 var platforms = require('../config').platforms;
 

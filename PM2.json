@@ -1,0 +1,14 @@
+{
+  "apps" : [{
+    "name"        : "livewindow",
+    "script"      : "bin/www",
+    "watch"       : true,
+    "merge_logs"  : true,
+    "env": {
+      "NODE_ENV": "dev",
+    },
+    "env_production" : {
+      "NODE_ENV": "prod"
+    },
+  }]
+}

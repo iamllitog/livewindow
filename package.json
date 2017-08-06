@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "cross-env NODE_ENV=\"dev\" nodemon --inspect ./bin/www",
-    "prod": "cross-env NODE_ENV=\"prod\" node ./bin/www"
+    "prod": "cross-env NODE_ENV=\"prod\" nodemon ./bin/www"
   },
   "dependencies": {
     "body-parser": "~1.17.1",

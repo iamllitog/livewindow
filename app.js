@@ -4,9 +4,20 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var searchEngin = require('./searchengin')();
+var searchEngin = require('./searchengin');
 
 var index = require('./routes/index');
+
+function timer(){
+  searchEngin()
+  .then(() => {
+    setTimeout(() => {
+        timer();
+    },60*1000*10);
+  });
+}
+
+timer();
 
 var app = express();
 

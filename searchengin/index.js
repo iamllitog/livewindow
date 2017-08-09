@@ -5,9 +5,8 @@ var quanminTask = require('./quanmin');
 var zhanqiTask = require('./zhanqi');
 var longzhuTask = require('./longzhu');
 
-function timer(){
-    // Promise.all([douyuTask.start(),huomaoTask.start(),xiongmaoTask.start(),quanminTask.start(),zhanqiTask.start(),longzhuTask.start()])
-    douyuTask.start()
+module.exports = function(){
+    return douyuTask.start()
     .then(() => (huomaoTask.start()))
     .then(() => (xiongmaoTask.start()))
     .then(() => (quanminTask.start()))
@@ -18,12 +17,5 @@ function timer(){
     })
     .then((data) => {
         console.log('抓取完成');
-        setTimeout(() => {
-            timer();
-        },60*1000*10);
     });
-}
-
-module.exports = function(){
-    timer();
 };

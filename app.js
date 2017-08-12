@@ -4,20 +4,34 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var searchEngin = require('./searchengin');
-
+var schedule = require('node-schedule');
 var index = require('./routes/index');
+var searchEngin = require('./searchengin');
+var statistics = require('./statistics');
 
+/**
+ * 爬虫任务 + 爬虫后日志分析
+ * 
+ */
 function timer(){
   searchEngin()
+  .then(() => {
+    return statistics.collect();
+  })
   .then(() => {
     setTimeout(() => {
         timer();
     },60*1000*10);
   });
 }
-
 timer();
+
+/**
+ * 分析定时任务
+ */
+var statisticsSchedule = schedule.scheduleJob('* * 0 * * *', function(){
+  statistics.timeTask();
+});
 
 var app = express();
 

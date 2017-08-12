@@ -1,6 +1,6 @@
 {
   "name": "livewindow",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "scripts": {
     "dev": "cross-env NODE_ENV=\"dev\" nodemon --inspect ./bin/www",
@@ -15,12 +15,13 @@
     "express": "~4.15.2",
     "morgan": "~1.8.1",
     "mysql": "^2.14.0",
-    "request": "^2.81.0",
+    "node-schedule": "^1.2.4",
     "serve-favicon": "~2.4.2",
-    "superagent": "^3.5.2"
+    "superagent": "^3.5.2",
+    "unirest": "^0.5.1"
   },
   "devDependencies": {
-    "nodemon": "^1.11.0",
-    "cross-env": "^5.0.3"
+    "cross-env": "^5.0.3",
+    "nodemon": "^1.11.0"
   }
 }

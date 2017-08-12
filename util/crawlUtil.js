@@ -1,22 +1,15 @@
-const request = require("request");
+const unirest = require("unirest");
 
 module.exports = {
     getHtmlTextByUrl (url){
-        var options = {
-            method: 'GET',
-            url,
-            headers:{
-                'cache-control': 'no-cache' 
-            }
-        };
-
+        var req = unirest("GET", url);
+        req.headers({
+          "cache-control": "no-cache"
+        });
         return new Promise((resolve,reject) => {
-            request(options, function (error, response, body) {
-                if (error){
-                    reject(error);
-                } else {
-                    resolve(body);
-                }
+            req.end(function (res) {
+                if (res.error) reject(res.error);
+                else resolve(res.raw_body);
             });
         });
     }

@@ -30,7 +30,7 @@ module.exports = {
                 if (url.indexOf('http') === 0){
                     url = video.url;
                 } else {
-                    url = `${BASE_URL}url`;
+                    url = `${BASE_URL}${url}`;
                 }
                 videos.push({
                     title : video.title,

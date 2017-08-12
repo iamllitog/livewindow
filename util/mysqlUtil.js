@@ -7,6 +7,14 @@ var pool  = mysql.createPool(mysqlConfig);
 var platforms = require('../config').platforms;
 
 module.exports = {
+    getConnection (){
+        return new Promise((resolve,reject) => {
+            pool.getConnection(function(err,connection) {
+                if (err){reject(err)}
+                else resolve(connection);
+            });
+        });
+    },
     getLives ({keyword,pageNum,pageCount,category,platform}){
         platform = platforms.find(function(val){return val.name === platform});
         if (!platform)  platform = 'allvideos';

@@ -29,7 +29,7 @@ timer();
 /**
  * 分析定时任务
  */
-var statisticsSchedule = schedule.scheduleJob('* * 0 * * *', function(){
+var statisticsSchedule = schedule.scheduleJob('0 10 0 * * *', function(){
   statistics.timeTask();
 });
 

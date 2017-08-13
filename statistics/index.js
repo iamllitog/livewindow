@@ -7,7 +7,7 @@ module.exports = {
             console.error(err);
         })
         .then((data) => {
-            console.log('数据收集完成');
+            console.log('主播数据收集完成');
         });
     },
     timeTask (){
@@ -16,7 +16,7 @@ module.exports = {
             console.error(err);
         })
         .then((data) => {
-            console.log('数据收集完成');
+            console.log('主播定时任务完成');
         });
     },
 };

@@ -2,29 +2,14 @@
 <html>
   <head>
     <title>直播之窗 - 直播搜索引擎</title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/stylesheets/index.css' />
+    <link rel='stylesheet' href='/stylesheets/include/util.css' />
     <link rel='stylesheet' href='/stylesheets/pure-min.css' />
     <link rel='stylesheet' href='/lib/remodal/remodal.css' />
     <link rel='stylesheet' href='/lib/remodal/remodal-default-theme.css' />
   </head>
   <body>
-    <div class="header">
-      <div class="home-menu pure-menu pure-menu-horizontal clearfix">
-        <a class="pure-menu-heading" href="/">Live Window</a>
-        
-        <ul class="pure-menu-list">
-            <li class="pure-menu-item pure-menu-selected"><a href="/" class="pure-menu-link">首页</a></li>
-            <li class="pure-menu-item"><a href="javascript:alert('开发中，敬请期待')" class="pure-menu-link">数据分析</a></li>
-            <li class="pure-menu-item"><a href="#reward" class="pure-menu-link">打赏站长</a></li>
-        </ul>
-        <div class="search-info">
-          <span class="parent">
-            <input type="text" class="txt j-flag" id="searchInput" <% if (keyword !== '') { %>value="<%=keyword%>"<% } %> style="opacity: 1;">
-            <label class="ph j-flag" id="searchHint">直播标题/主播名</label>
-          </span>  
-        </div>
-      </div>
-    </div>
+    <%- include('./include/header.ejs') %>
     <div class="content">
       <div class="filter-info">
           <ul class="sorts">
@@ -108,15 +93,10 @@
       </div>
     </div>
 
-    <div class="remodal zhifuqr" data-remodal-id="reward">
-      <button data-remodal-action="close" class="remodal-close"></button>
-      <h2>感谢您的支持，我会继续努力的！</h2>
-      <img class="qr-img" src="/images/zhifubao_qr.png" alt="">
-      <p class="tip">打开支付宝扫一扫,就可进行扫码打赏哦~</p>
-    </div>
-
     <script src="https://cdn.staticfile.org/jquery/1.12.4/jquery.min.js"></script>
     <script src="/lib/remodal/remodal.min.js"></script>
+    <script src="/javascripts/include/util.js"></script>
+    <script src="/javascripts/include/header.js"></script>
     <script src="/javascripts/index.js"></script>
   </body>
 </html>

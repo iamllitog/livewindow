@@ -1,4 +1,5 @@
 const mysqlUtil = require('../util/mysqlUtil');
+const platforms = require('../config').platforms;
 
 // 在reporttemp_author（字段：platform，author，timecount）表中找到 对应平台&今日 的数据 
     // 无此数据 新建此条数据 
@@ -30,7 +31,40 @@ module.exports = {
         .then(({connection,rows}) => {
             connection.release();
         });
-        
+    },
+    getDayactiveanchor (){
+        return mysqlUtil.getConnection()
+        .then((connection) => {
+            return this.doSql(connection,`SELECT DATE_FORMAT(collectDate,'%Y-%m-%d') AS collectDate FROM report_authornum GROUP BY collectDate ORDER BY collectDate;`);
+        })
+        .then(({connection,rows}) => {
+            let allPromise = [];
+            platforms.forEach((platform) => {
+                allPromise.push(this.dayactiveanchor(connection,platform));
+            });
+            return Promise.all(allPromise)
+            .then((datas) => {
+                connection.release();
+                return Promise.resolve({
+                    dates : rows,
+                    datas
+                });
+            });
+        });
+    },
+    dayactiveanchor(connection,platform){
+        return new Promise((resolve,reject) => {
+            connection.query(`SELECT authorNum FROM report_authornum WHERE platform=? ORDER BY collectDate`,[platform.name],function(error,rows){
+                if (error){reject(error)}
+                else{
+                    resolve({
+                        name : platform.name,
+                        chtext : platform.chtext,
+                        data : rows
+                    });
+                }
+            });
+        });
     },
     doSql (connection,sql){
         return new Promise((resolve,reject) => {

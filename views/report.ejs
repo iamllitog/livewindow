@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>直播之窗 - 直播搜索引擎</title>
+    <link rel='stylesheet' href='/stylesheets/include/util.css' />
+    <link rel='stylesheet' href='/stylesheets/report.css' />
+    <link rel='stylesheet' href='/stylesheets/pure-min.css' />
+    <link rel='stylesheet' href='/lib/remodal/remodal.css' />
+    <link rel='stylesheet' href='/lib/remodal/remodal-default-theme.css' />
+  </head>
+  <body>
+    <input name="reportType" type="hidden" value="<%=reportTab%>">
+    <input name="reportData" type="hidden" value="<%=reportData%>">
+    <%- include('./include/header.ejs') %>
+    <div class="menu">
+      <div class="menu-content">
+        <a href="/report/dayactiveanchor" class="menu-item <% if(reportTab === 'dayactiveanchor') { %>active<% } %>">日活跃主播</a>
+      </div>
+    </div>
+    <div class="content">
+        <div id="chart"></div>
+    </div>
+
+    <script src="https://cdn.staticfile.org/jquery/1.12.4/jquery.min.js"></script>
+    <script src="/lib/remodal/remodal.min.js"></script>
+    <script src="/lib/echarts.common.min.js"></script>
+    <script src="/javascripts/include/util.js"></script>
+    <script src="/javascripts/include/header.js"></script>
+    <script src="/javascripts/report.js"></script>
+  </body>
+</html>

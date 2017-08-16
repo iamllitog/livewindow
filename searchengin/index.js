@@ -6,7 +6,7 @@ var zhanqiTask = require('./zhanqi');
 var longzhuTask = require('./longzhu');
 const promiseUtil = require('../util/promiseUtil');
 
-let time = 60 * 1000;
+let time = 2 * 60 * 1000;
 
 module.exports = function(){
     return promiseUtil.timeRetryPromise(douyuTask.start,time,3)

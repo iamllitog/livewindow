@@ -5,12 +5,12 @@ let BASE_URL = "http://longzhu.com";
 let ALL_VIDEO_URL = "http://api.plu.cn/tga/streams?sort-by=views&filter=0&game=0";
 let PAGE_COUNT = 50;
 
-module.exports = {
+let task = {
     start() {
         console.log('longzhu:开始抓取');
         return mysqlUtil.deleteDataByPlatform('longzhu')
         .then(() => {
-            return this.getVideos();
+            return task.getVideos();
         }).then((data) => {
             console.log('longzhu:抓取完成');
             return data;
@@ -39,11 +39,11 @@ module.exports = {
                 }
             });
             canTurnPage = videoList.length <= videos.length;
-            return this.store(videos);
+            return task.store(videos);
         })
         .then(() => {
             if (canTurnPage){
-                return this.getVideos(pageNum+1);
+                return task.getVideos(pageNum+1);
             }
         });
     },
@@ -51,3 +51,5 @@ module.exports = {
         return mysqlUtil.insertDataByPlatform('longzhu',videos);
     },
 };
+
+module.exports = task;

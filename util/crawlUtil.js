@@ -1,4 +1,8 @@
 const unirest = require("unirest");
+const Promise = require('bluebird');
+Promise.config({
+    cancellation: true,
+});
 
 module.exports = {
     getHtmlTextByUrl (url){

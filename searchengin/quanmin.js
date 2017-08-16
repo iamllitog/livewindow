@@ -5,12 +5,12 @@ const cheerio = require("cheerio");
 let BASE_URL = "https://www.quanmin.tv";
 let ALL_VIDEO_URL = "https://www.quanmin.tv/game/all?p=";
 
-module.exports = {
+let task = {
     start() {
         console.log('quanmin:开始抓取');
         return mysqlUtil.deleteDataByPlatform('quanmin')
         .then(() => {
-            return this.getVideos();
+            return task.getVideos();
         }).then((data) => {
             console.log('quanmin:抓取完成');
             return data;
@@ -39,11 +39,11 @@ module.exports = {
                 }
             });
             canTurnPage = allVideos.length <= videos.length;
-            return this.store(videos);
+            return task.store(videos);
         })
         .then(() => {
             if (canTurnPage){
-                return this.getVideos(pageNum+1);
+                return task.getVideos(pageNum+1);
             }
         });
     },
@@ -51,3 +51,5 @@ module.exports = {
         return mysqlUtil.insertDataByPlatform('quanmin',videos);
     },
 };
+
+module.exports = task;

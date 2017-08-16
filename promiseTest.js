@@ -1,7 +1,6 @@
 const Promise = require('bluebird');
 const retry = require('bluebird-retry');
 Promise.config({
-    // Enable cancellation
     cancellation: true,
 });
 
@@ -33,16 +32,20 @@ function testPromise (){
 function timeRetryPromise (promiseFun,ms,retry){
     --retry;
     function timeout(){
-        return new Promise((resolve) => {
-            setTimeout(function() {
+        return new Promise((resolve,reject,onCancel) => {
+            let tp = setTimeout(function() {
                 resolve('timeout');
             }, ms);
+            onCancel(function() {
+                clearTimeout(tp);
+            });
         });
     }
 
     let promise = promiseFun();
+    let timeoutPromise = timeout();
 
-    return Promise.race([promise,timeout()])
+    return Promise.race([promise,timeoutPromise])
     .then((result) => {
         if (result === 'timeout'){
             promise.cancel();
@@ -52,9 +55,10 @@ function timeRetryPromise (promiseFun,ms,retry){
                 throw new Error('任务超时，并超过指定次数');
             }
         } else {
+            timeoutPromise.cancel();
             return result;
         }
     });
 }
 
-timeRetryPromise(testPromise,1000,3)
+timeRetryPromise(testPromise,10000,3)

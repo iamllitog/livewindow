@@ -4,12 +4,12 @@ const mysqlUtil = require('../util/mysqlUtil');
 let BASE_URL = "https://www.huomao.com";
 let VIDEO_AJAX_URL = "https://www.huomao.com/channels/channel.json?game_url_rule=all&page=";
 
-module.exports = {
+let task = {
     start() {
         console.log('huomao:开始抓取');
         return mysqlUtil.deleteDataByPlatform('huomao')
         .then(() => {
-            return this.getVideos();
+            return task.getVideos();
         }).then((data) => {
             console.log('huomao:抓取完成');
             return data;
@@ -37,11 +37,11 @@ module.exports = {
             });
 
             canTurnPage = channelList.length <= videos.length;
-            return this.store(videos);
+            return task.store(videos);
         })
         .then(() => {
             if (canTurnPage){
-                return this.getVideos(pageNum+1);
+                return task.getVideos(pageNum+1);
             }
         });
     },
@@ -49,3 +49,5 @@ module.exports = {
         return mysqlUtil.insertDataByPlatform('huomao',videos);
     },
 };
+
+module.exports = task;

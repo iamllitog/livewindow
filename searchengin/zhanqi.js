@@ -4,12 +4,12 @@ const mysqlUtil = require('../util/mysqlUtil');
 let BASE_URL = "http://www.zhanqi.tv";
 let ALL_VIDEO_URL = "http://www.zhanqi.tv/api/static/v2.1/live/list/50/";
 
-module.exports = {
+let task = {
     start() {
         console.log('zhanqi:开始抓取');
         return mysqlUtil.deleteDataByPlatform('zhanqi')
         .then(() => {
-            return this.getVideos();
+            return task.getVideos();
         })
         .then(() => {
             return mysqlUtil.deleteDataLtViewCount('zhanqi',100);
@@ -43,11 +43,11 @@ module.exports = {
                 });
             });
             canTurnPage = videos.length >= 50;
-            return this.store(videos);
+            return task.store(videos);
         })
         .then(() => {
             if (canTurnPage){
-                return this.getVideos(pageNum+1);
+                return task.getVideos(pageNum+1);
             }
         });
     },
@@ -55,3 +55,5 @@ module.exports = {
         return mysqlUtil.insertDataByPlatform('zhanqi',videos);
     },
 };
+
+module.exports = task;

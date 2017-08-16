@@ -4,12 +4,12 @@ const mysqlUtil = require('../util/mysqlUtil');
 let BASE_URL = "https://www.panda.tv";
 let ALL_VIDEO_URL = "https://www.panda.tv/live_lists?status=2&order=person_num&token=&pagenum=120&pageno=";
 
-module.exports = {
+let task = {
     start() {
         console.log('xiongmao:开始抓取');
         return mysqlUtil.deleteDataByPlatform('xiongmao')
         .then(() => {
-            return this.getVideos();
+            return task.getVideos();
         }).then((data) => {
             console.log('xiongmao:抓取完成');
             return data;
@@ -36,11 +36,11 @@ module.exports = {
                 }
             });
             canTurnPage = videoList.length <= videos.length;
-            return this.store(videos);
+            return task.store(videos);
         })
         .then(() => {
             if (canTurnPage){
-                return this.getVideos(pageNum+1);
+                return task.getVideos(pageNum+1);
             }
         });
     },
@@ -48,3 +48,5 @@ module.exports = {
         return mysqlUtil.insertDataByPlatform('xiongmao',videos);
     },
 };
+
+module.exports = task;

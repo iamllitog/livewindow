@@ -1,5 +1,9 @@
 var mysql = require('mysql');
-let mysqlConfig = require('../config').mysqlConfig[process.env.NODE_ENV]
+let mysqlConfig = require('../config').mysqlConfig[process.env.NODE_ENV];
+const Promise = require('bluebird');
+Promise.config({
+    cancellation: true,
+});
 
 //创建连接池
 var pool  = mysql.createPool(mysqlConfig);

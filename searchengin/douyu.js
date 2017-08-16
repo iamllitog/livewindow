@@ -6,12 +6,12 @@ const mysqlUtil = require('../util/mysqlUtil');
 let BASE_URL = "https://www.douyu.com";
 let ALL_VIDEOS_URL = `https://www.douyu.com/directory/all?isAjax=1&page=`;
 
-module.exports = {
+let task = {
     start() {
         console.log('douyu:开始抓取');
         return mysqlUtil.deleteDataByPlatform('douyu')
         .then(() => {
-            return this.getVideos();
+            return task.getVideos();
         })
         .then(() => {
             return mysqlUtil.deleteDataLtViewCount('douyu',100);
@@ -42,11 +42,11 @@ module.exports = {
             });
 
             canTurnPage = lives.length >= 120 && pageNum <= 150;
-            return this.store(lives);
+            return task.store(lives);
         })
         .then(() => {
             if (canTurnPage){
-                return this.getVideos(pageNum+1);
+                return task.getVideos(pageNum+1);
             }
         });
     },
@@ -54,3 +54,5 @@ module.exports = {
         return mysqlUtil.insertDataByPlatform('douyu',videos);
     }
 };
+
+module.exports = task;

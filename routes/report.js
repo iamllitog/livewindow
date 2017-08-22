@@ -17,10 +17,15 @@ router.get('/dayactiveanchor', function(req, res, next) {
         reportData.xAxis = data.dates.map((item) => {
             return item.collectDate;
         });
+        let xaxisLen = reportData.xAxis.length;
         reportData.data = data.datas.map((rows) => {
             rows.data = rows.data.map((item) => {
                 return item.authorNum;
             });
+            let unshiftLen = xaxisLen - rows.data.length;
+            for (var index = 0; index < unshiftLen; index++) {
+                rows.data.unshift(null);
+            }
             return rows;
         });
         res.render('report',{

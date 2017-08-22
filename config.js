@@ -17,6 +17,9 @@ module.exports = {
     },{
         name : 'longzhu',
         chtext : '龙珠'
+    },{
+        name : 'huya',
+        chtext : '虎牙'
     }],
     mysqlConfig : {
         dev : {

@@ -4,6 +4,7 @@ var xiongmaoTask = require('./xiongmao');
 var quanminTask = require('./quanmin');
 var zhanqiTask = require('./zhanqi');
 var longzhuTask = require('./longzhu');
+var huyaTask = require('./huya');
 const promiseUtil = require('../util/promiseUtil');
 
 let time = 2 * 60 * 1000;
@@ -15,6 +16,7 @@ module.exports = function(){
     .then(() => (promiseUtil.timeRetryPromise(quanminTask.start,time,3)))
     .then(() => (promiseUtil.timeRetryPromise(zhanqiTask.start,time,3)))
     .then(() => (promiseUtil.timeRetryPromise(longzhuTask.start,time,3)))
+    .then(() => (promiseUtil.timeRetryPromise(huyaTask.start,time,3)))
     .catch((err) => {
         console.error(err);
     })

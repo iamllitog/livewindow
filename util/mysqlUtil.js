@@ -146,7 +146,17 @@ module.exports = {
             pool.getConnection(function(err,connection) {
                 if (err){reject(err)}
                 else {
-                    connection.query(`INSERT INTO ${platform}(title,url,imageUrl,author,personNum,category,platform) VALUES ?`,[data],function(error,rows){
+                    connection.query(`
+                        INSERT INTO ${platform}(title,url,imageUrl,author,personNum,category,platform) VALUES ? 
+                        ON DUPLICATE KEY UPDATE 
+                            title = IF(personNum < VALUES(personNum), VALUES(title), title),
+                            url = IF(personNum < VALUES(personNum), VALUES(url), url),
+                            imageUrl = IF(personNum < VALUES(personNum), VALUES(imageUrl), imageUrl),
+                            author = IF(personNum < VALUES(personNum), VALUES(author), author),
+                            personNum = IF(personNum < VALUES(personNum), VALUES(personNum), personNum),
+                            category = IF(personNum < VALUES(personNum), VALUES(category), category),
+                            platform = IF(personNum < VALUES(personNum), VALUES(platform), platform)
+                    `,[data],function(error,rows){
                         if (error){reject(error)}
                         else{
                             resolve(rows);

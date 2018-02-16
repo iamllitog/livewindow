@@ -78,7 +78,32 @@ var indexApp = {
     initView : function(){
         $(window).resize();
         if ($('#searchInput').val() !== '')   $('#searchHint').hide();
+        var imgs = $('img');
+        for(var i = 0;i<imgs.length;i++)
+        {
+            var url = imgs[i].dataset.src;
+            this.loadImage(imgs[i],url,this.showImage);
+        }
+    },
+    loadImage(obj,url,callback){
+        var img = new Image();
+        img.src = url;
+
+        // 判断图片是否在缓存中
+        if(img.complete){
+            callback.call(img,obj);
+            return;
+        }
+
+        // 图片加载到浏览器的缓存中回调函数
+        img.onload = function(){
+            callback.call(img,obj);
+        }
+    },
+    showImage(obj){
+        obj.src = this.src;
     }
+
 };
 
 $(function(){

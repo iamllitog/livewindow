@@ -44,7 +44,7 @@ module.exports = {
             port : 8888
         },
         prod : {
-            port : 80
+            port : 8888
         }
     }
 };

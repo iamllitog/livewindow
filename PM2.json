@@ -5,7 +5,7 @@
     "watch"       : true,
     "merge_logs"  : true,
     "env": {
-      "NODE_ENV": "dev",
+      "NODE_ENV": "development"
     },
     "env_production" : {
       "NODE_ENV": "prod"

@@ -16,6 +16,11 @@ module.exports = {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
   },
+  router: {
+    scrollBehavior (to, from, savedPosition) {
+      return { x: 0, y: 0 }
+    }
+  },
   /*
   ** Global CSS
   */
@@ -32,6 +37,7 @@ module.exports = {
   },
   plugins: [
     '~/plugins/directives.js',
+    {src: '~/plugins/lazyload.js', ssr: false}
   ],
   /*
   ** Add axios globally

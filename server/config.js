@@ -30,7 +30,7 @@ export const mysqlConfig = {
     database: 'livewindow',
     charset: 'utf8mb4'
   },
-  prod: {
+  production: {
     user: 'root',
     host: '172.21.0.17',
     port: 3306,
@@ -44,8 +44,8 @@ export const serverConfig = {
   development: {
     port: 8888
   },
-  prod: {
-    port: 8888
+  production: {
+    port: 80
   }
 }
 

@@ -17,6 +17,7 @@
     "cheerio": "^1.0.0-rc.2",
     "cookie-parser": "^1.4.3",
     "debug": "~2.6.3",
+    "echarts": "^4.1.0",
     "ejs": "~2.5.6",
     "express": "^4.15.3",
     "morgan": "~1.8.1",
@@ -26,13 +27,13 @@
     "serve-favicon": "~2.4.2",
     "source-map-support": "^0.4.15",
     "superagent": "^3.5.2",
-    "unirest": "^0.5.1"
+    "unirest": "^0.5.1",
+    "vue-lazyload": "^1.2.3"
   },
   "devDependencies": {
-    "prettier": "^1.12.1",
-    "cross-env": "^5.0.3",
     "babel-eslint": "^8.2.3",
     "backpack-core": "^0.4.1",
+    "cross-env": "^5.0.3",
     "eslint": "^4.3.0",
     "eslint-config-standard": "^10.2.1",
     "eslint-loader": "^1.9.0",
@@ -40,6 +41,7 @@
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-node": "^5.1.1",
     "eslint-plugin-promise": "^3.5.0",
-    "eslint-plugin-standard": "^3.0.1"
+    "eslint-plugin-standard": "^3.0.1",
+    "prettier": "^1.12.1"
   }
 }

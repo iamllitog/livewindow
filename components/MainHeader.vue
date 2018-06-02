@@ -59,6 +59,7 @@ export default {
       delete query.pageNum
       query.keyword = this.keyword
       if (this.keyword.trim() === '') delete query.keyword
+      query.pageNum = 1
       this.$router.push({
         path: '/',
         query

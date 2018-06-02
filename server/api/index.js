@@ -1,5 +1,6 @@
 import express from 'express'
 import mysqlUtil from '../util/mysqlUtil'
+import statisticsAuthor from '../statistics/author'
 const router = express.Router()
 
 router.get('/lives', (req, res, next) => {
@@ -20,7 +21,6 @@ router.get('/lives', (req, res, next) => {
   if (!platform || platform.trim() === '') {
     platform = ''
   }
-  console.log(pageNum, pageCount, category, keyword, platform);
   mysqlUtil.getLives({pageNum, pageCount, category, keyword, platform})
     .then(({lives, totalCount}) => {
       res.json({
@@ -44,6 +44,33 @@ router.get('/categorys', (req, res, next) => {
         success: 1,
         data: {
           categorys
+        }
+      })
+    })
+})
+
+router.get('/report/dayactiveanchor', (req, res, next) => {
+  statisticsAuthor.getDayactiveanchor()
+    .then((data) => {
+      let reportData = {
+        xAxis: null,
+        data: null
+      }
+      reportData.xAxis = data.dates.map((item) => item.collectDate)
+      let xaxisLen = reportData.xAxis.length
+      reportData.data = data.datas.map((rows) => {
+        rows.data = rows.data.map((item) => item.authorNum)
+        let unshiftLen = xaxisLen - rows.data.length
+        for (let index = 0; index < unshiftLen; index++) {
+          rows.data.unshift(null)
+        }
+        return rows
+      })
+      res.json({
+        success: 1,
+        data: {
+          reportTab: 'dayactiveanchor',
+          reportData
         }
       })
     })

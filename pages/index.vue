@@ -7,32 +7,11 @@
                 </li>
                 <li class="sort dropdown">
                     <a :class="{'active': platform && platform !== ''}"
-                      href="#">平台<template v-if="platform && platform !== ''">:{{platform}}</template>
+                      href="#">平台<template v-if="platform && platform !== ''">:{{platformText}}</template>
                     </a>
                     <ul class="droplist">
-                        <li class="sort">
-                            <a href="javascript:void(0)" data-platform="" class="platformChange">全部平台</a>
-                        </li>
-                        <li class="sort">
-                            <a href="javascript:void(0)" data-platform="douyu" class="platformChange">斗鱼</a>
-                        </li>
-                        <li class="sort">
-                            <a href="javascript:void(0)" data-platform="quanmin" class="platformChange">全民</a>
-                        </li>
-                        <li class="sort">
-                            <a href="javascript:void(0)" data-platform="xiongmao" class="platformChange">熊猫</a>
-                        </li>
-                        <li class="sort">
-                            <a href="javascript:void(0)" data-platform="zhanqi" class="platformChange">战旗</a>
-                        </li>
-                        <li class="sort">
-                            <a href="javascript:void(0)" data-platform="longzhu" class="platformChange">龙珠</a>
-                        </li>
-                        <li class="sort">
-                            <a href="javascript:void(0)" data-platform="huomao" class="platformChange">火猫</a>
-                        </li>
-                        <li class="sort">
-                            <a href="javascript:void(0)" data-platform="huya" class="platformChange">虎牙</a>
+                        <li class="sort" v-for="item in platformList" :key="item.value">
+                            <a href="javascript:void(0)" @click="changePlatform(item.value)" class="platformChange">{{item.label}}</a>
                         </li>
                     </ul>
                 </li>
@@ -42,24 +21,23 @@
                     </a>
                     <ul class="droplist">
                         <li class="sort">
-                            <a href="javascript:void(0)" data-category="" class="categoryChange">全部分类</a>
+                            <a href="javascript:void(0)" @click="changeCategory('')" class="categoryChange">全部分类</a>
                         </li>
                         <li class="sort" v-for="item in categorys" :key="item.category">
-                            <a href="javascript:void(0)" :data-category="item.category" class="categoryChange">{{item.category}}</a>
+                            <a href="javascript:void(0)" @click="changeCategory(item.category)" class="categoryChange">{{item.category}}</a>
                         </li>
                     </ul>
                 </li>
             </ul>
         </div>
         <ul id="live-list-contentbox" class="play-list clearfix">
-            <li v-for="live in lives">
+            <li v-for="live in lives" :key="live.url+live.author">
                 <a class="play-list-link" :href="live.url" :title="live.title" target="_blank">
                     <span class="imgbox">
                         <span class="imgbox-corner-mark"></span>
                         <b></b>
-                        <img :data-src="live.imageUrl" style="display: block;">
-                        <!-- TODO -->
-                        <img class="platform-logo" :src="'/images/platform_logo/'+live.platform+'.png'">
+                        <img v-lazy="live.imageUrl" style="display: block;">
+                        <img class="platform-logo" :src="'/platform_logo/'+live.platform+'.png'">
                     </span>
                     <div class="mes">
                         <div class="mes-tit">
@@ -74,19 +52,15 @@
                 </a>
             </li>
         </ul>
-        <!-- <div class="tcd-page-code">
-            <a href="javascript:void(0)" :data-page="pageNum-1" class="pageChange shark-pager-prev"
-            :class="{'shark-pager-disable shark-pager-disable-prev':pageNum <= 1}">上一页</a>
-            <%for (var i = startPageNum;i <= endPageNum;i++){%>
-            <a href="javascript:void(0)" data-page="<%=i%>" class="pageChange shark-pager-item <% if (i === pageNum) { %>current<% } %>"><%=i%></a>
-            <%}%>
-            <a href="javascript:void(0)" :data-page="pageNum+1" class="pageChange shark-pager-next"
-            :class="{'shark-pager-disable shark-pager-disable-next': pageNum >= pageTotalCount}">下一页</a>
-            <span class="jumppage">跳转到：</span><input id="pageJumpInput" class="jumptxt" name="" type="text"><a id="pageJumpBt" href="javascript:void(0)" class="pageChange shark-pager-submit">GO</a>
-        </div> -->
+        <Pagination
+          :total-count="totalCount"
+          :pre-page-size="50"
+          v-model="pageNum"
+        ></Pagination>
     </div>
 </template>
 <script>
+import Pagination from '@/components/Pagination'
 // 获取直播信息
 function getLives ($axios, {pageNum, category, keyword, platform}) {
   return $axios.get('/api/lives', {
@@ -105,6 +79,7 @@ function getCategorys ($axios) {
 }
 
 export default {
+  components: {Pagination},
   asyncData ({ $axios, query }) {
     return Promise.all([getLives($axios, query), getCategorys($axios)])
       .then(([liveInfo, categorys]) => (
@@ -118,6 +93,88 @@ export default {
           categorys
         }
       ))
+  },
+  data () {
+    return {
+      platformList: [
+        {label: '全部平台', value: ''},
+        {label: '斗鱼', value: 'douyu'},
+        {label: '全民', value: 'quanmin'},
+        {label: '熊猫', value: 'xiongmao'},
+        {label: '战旗', value: 'zhanqi'},
+        {label: '龙珠', value: 'longzhu'},
+        {label: '火猫', value: 'huomao'},
+        {label: '虎牙', value: 'huya'}
+      ]
+    }
+  },
+  computed: {
+    // 当前平台中文名
+    platformText () {
+      let currentPlatform = this.platformList.find(({value}) => value === this.platform)
+      if (currentPlatform) return currentPlatform.label
+      return null
+    }
+  },
+  methods: {
+    // 获取直播数据
+    getLives () {
+      getLives(this.$axios, {
+        pageNum: this.pageNum,
+        category: this.category,
+        keyword: this.keyword,
+        platform: this.platform
+      }).then((liveInfo) => {
+        this.lives = liveInfo.lives
+        this.totalCount = liveInfo.totalCount
+        this.pageNum = liveInfo.pageNum
+        this.category = liveInfo.category
+        this.keyword = liveInfo.keyword
+        this.platform = liveInfo.platform
+      })
+    },
+    // 改变平台
+    changePlatform (platform) {
+      this.$router.push({
+        path: '/',
+        query: {
+          ...this.$route.query,
+          pageNum: 1,
+          platform
+        }
+      })
+    },
+    // 改变类别
+    changeCategory (category) {
+      this.$router.push({
+        path: '/',
+        query: {
+          ...this.$route.query,
+          pageNum: 1,
+          category
+        }
+      })
+    }
+  },
+  watch: {
+    // 当页码改变时重新获取数据
+    pageNum (pageNum) {
+      this.$router.push({
+        path: '/',
+        query: {
+          ...this.$route.query,
+          pageNum
+        }
+      })
+    },
+    // 当路由查询条件变化时，更新数据
+    '$route.query' (queryObj) {
+      this.pageNum = Number(queryObj.pageNum) || 1
+      this.category = queryObj.category || ''
+      this.keyword = queryObj.keyword || ''
+      this.platform = queryObj.platform || ''
+      this.getLives()
+    }
   }
 }
 </script>
@@ -188,6 +245,9 @@ export default {
     -moz-box-shadow: 0 3px 3px rgba(0,0,0,.1);
     box-shadow: 0 3px 3px rgba(0,0,0,.1);
 }
+.filter-info .sorts .dropdown:hover ul.droplist{
+    display: block;
+}
 .filter-info .sorts .droplist .sort {
     float: none;
     white-space: nowrap;
@@ -199,10 +259,63 @@ export default {
     padding-right: 30px;
 }
 
-#live-list-contentbox.x10 li{width:10%}#live-list-contentbox.x9 li{width:11.1111%}#live-list-contentbox.x8 li{width:12.5%}#live-list-contentbox.x7 li{width:14.2857%}#live-list-contentbox.x6 li{width:16.6666%}#live-list-contentbox.x5 li{width:20%}#live-list-contentbox.x4 li{width:25%}#live-list-contentbox.x3 li{width:33.3333%}#live-list-contentbox.x2 li{width:50%}#live-list-contentbox.x1 li{width:100%}
+#live-list-contentbox{
+    text-align: left;
+}
 #live-list-contentbox li{
     display: inline-block;
     margin-bottom: 20px;
+}
+
+@media only screen and (max-width: 90px) {
+  #live-list-contentbox li {
+    width: 100%;
+  }
+}
+@media only screen and (min-width: 90px) and (max-width: 420px) {
+  #live-list-contentbox li {
+    width: 50%;
+  }
+}
+@media only screen and (min-width: 420px) and (max-width: 750px) {
+  #live-list-contentbox li {
+    width: 33.3333%;
+  }
+}
+@media only screen and (min-width: 750px) and (max-width: 1080px) {
+  #live-list-contentbox li {
+    width: 25%;
+  }
+}
+@media only screen and (min-width: 1080px) and (max-width: 1410px) {
+  #live-list-contentbox li {
+    width: 20%;
+  }
+}
+@media only screen and (min-width: 1410px) and (max-width: 1740px) {
+  #live-list-contentbox li {
+    width: 16.6666%;
+  }
+}
+@media only screen and (min-width: 1740px) and (max-width: 2070px) {
+  #live-list-contentbox li {
+    width: 14.2857%;
+  }
+}
+@media only screen and (min-width: 2070px) and (max-width: 2400px) {
+  #live-list-contentbox li {
+    width: 12.5%;
+  }
+}
+@media only screen and (min-width: 2400px) and (max-width: 2730px) {
+  #live-list-contentbox li {
+    width: 11.1111%;
+  }
+}
+@media only screen and (min-width: 2730px) {
+  #live-list-contentbox li {
+    width: 10%;
+  }
 }
 
 .play-list {
@@ -239,7 +352,7 @@ export default {
     display: block;
     width: 50px;
     height: 50px;
-    background: url(/images/playIcon.png) no-repeat;
+    background: url(~/assets/images/playIcon.png) no-repeat;
     position: absolute;
     top: 80%;
     left: 50%;
@@ -316,7 +429,7 @@ export default {
     display: block;
     padding-left: 18px;
     font-size: 12px;
-    background: url(/images/mem-icos.png) no-repeat;
+    background: url(~/assets/images/mem-icos.png) no-repeat;
     color: #797979;
 }
 
@@ -338,75 +451,6 @@ export default {
 
 .play-list li a:hover .mes-tit, .play-list li a:hover h3 {
     color: #f70;
-}
-
-.tcd-page-code {
-    padding: 20px 0 30px;
-    text-align: center;
-    font-size: 12px;
-}
-
-.tcd-page-code a.shark-pager-disable {
-    display: inline-block;
-    height: 26px;
-    text-align: center;
-    line-height: 26px;
-    color: #bfbfbf;
-    margin: 0 5px;
-    border: 1px solid #bfbfbf;
-    border-radius: 3px;
-}
-
-.tcd-page-code a.shark-pager-disable:hover {
-    border: 1px solid #bfbfbf;
-    background: 0 0;
-    cursor: text;
-    color: #bfbfbf;
-}
-
-.tcd-page-code a.shark-pager-next, .tcd-page-code a.shark-pager-prev {
-    width: 60px;
-}
-
-.tcd-page-code a {
-    height: 26px;
-    color: #7f7f7f;
-    border: 1px solid #d5d5d5;
-    border-radius: 3px;
-}
-
-.tcd-page-code a, .tcd-page-code a.current {
-    width: 34px;
-    text-align: center;
-    line-height: 26px;
-    margin: 0 5px;
-    display: inline-block;
-}
-
-.tcd-page-code a.current {
-    height: 26px;
-    border-radius: 3px;
-}
-
-.tcd-page-code .jumppage {
-    margin-left: 20px;
-    color: #7f7f7f;
-    line-height: 28px;
-}
-
-.tcd-page-code .jumptxt {
-    width: 34px;
-    height: 26px;
-    line-height: 26px;
-    border: 1px solid #d5d5d5;
-    padding: 0 5px;
-    vertical-align: top;
-}
-
-.tcd-page-code a.current, .tcd-page-code a:hover {
-    background: #2d3e50;
-    color: #fff;
-    border: 1px solid #2d3e50;
 }
 
 </style>

@@ -14,23 +14,23 @@ import { normalizePort } from './util/stringUtil'
  * 爬虫任务 + 爬虫后日志分析
  *
  */
-// function timer () {
-//   searchEngin()
-//     .then(() => statistics.collect())
-//     .then(() => {
-//       setTimeout(() => {
-//         timer()
-//       }, 60 * 1000 * 10)
-//     })
-// }
-// timer()
+function timer () {
+  searchEngin()
+    .then(() => statistics.collect())
+    .then(() => {
+      setTimeout(() => {
+        timer()
+      }, 60 * 1000 * 10)
+    })
+}
+timer()
 
 /**
  * 分析定时任务
  */
-// schedule.scheduleJob('0 10 0 * * *', () => {
-//   statistics.timeTask()
-// })
+schedule.scheduleJob('0 10 0 * * *', () => {
+  statistics.timeTask()
+})
 
 var app = express()
 

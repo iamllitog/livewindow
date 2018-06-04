@@ -1,4 +1,4 @@
-let serverConfig = require('./server/config').serverConfig;
+let serverConfig = require('./server/config').serverConfig
 let port = serverConfig[process.env.NODE_ENV].port
 
 module.exports = {
@@ -29,10 +29,10 @@ module.exports = {
     '~/assets/css/include/util.css'
   ],
   modules: [
-    '@nuxtjs/axios',
+    '@nuxtjs/axios'
   ],
   axios: {
-    baseURL:`http://${process.env.HOST || 'localhost'}:${process.env.PORT || port}`,
+    baseURL: `http://${process.env.HOST || 'localhost'}:${process.env.PORT || port}`,
     browserBaseURL: '/'
   },
   plugins: [

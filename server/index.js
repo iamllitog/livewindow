@@ -58,8 +58,7 @@ if (nuxtConfig.dev) {
 app.use(nuxt.render)
 
 const port = normalizePort(serverConfig[process.env.NODE_ENV].port)
-const host = process.env.HOST || '127.0.0.1'
 
 // Listen the server
-app.listen(port, host)
-console.log('Server listening on ' + host + ':' + port) // eslint-disable-line no-console
+app.listen(port)
+console.log('Server listening port on:' + port) // eslint-disable-line no-console

@@ -1,10 +1,8 @@
-import cheerio from 'cheerio'
 import crawlUtil from '../util/crawlUtil'
 import mysqlUtil from '../util/mysqlUtil'
-import { toNormalNumber } from '../util/stringUtil'
 
 const BASE_URL = 'https://www.douyu.com'
-const ALL_VIDEOS_URL = `https://www.douyu.com/directory/all?isAjax=1&page=`
+const ALL_VIDEOS_URL = `https://www.douyu.com/gapi/rkc/directory/0_0/`
 
 const task = {
   start () {
@@ -22,23 +20,22 @@ const task = {
     let canTurnPage = false
     return crawlUtil.getHtmlTextByUrl(ALL_VIDEOS_URL + pageNum)
       .then((text) => {
-        let $ = cheerio.load(text)
-        let lives = []
-        $('li').each((index, item) => {
-          let personNum = toNormalNumber($(item).find('.mes .dy-num').text())
-          lives.push({
-            title: $(item).find('a').attr('title'),
-            url: `${BASE_URL}${$(item).find('a').attr('href')}`,
-            imageUrl: $(item).find('img').attr('data-original'),
-            author: $(item).find('.mes .dy-name').text(),
-            personNum,
-            category: $(item).find('.mes-tit span.tag').text().trim(),
+        let datas = JSON.parse(text).data.rl
+        let videos = []
+        datas.forEach((video) => {
+          videos.push({
+            title: video.rn,
+            url: `${BASE_URL}${video.url}`,
+            imageUrl: video.rs1,
+            author: video.nn,
+            personNum: Number(video.ol),
+            category: video.c2name,
             platform: 'douyu'
           })
         })
 
-        canTurnPage = lives.length >= 120 && pageNum <= 150
-        return task.store(lives)
+        canTurnPage = videos.length >= 120 && pageNum <= 150
+        return task.store(videos)
       })
       .then(() => {
         if (canTurnPage) {

@@ -7,30 +7,32 @@ import schedule from 'node-schedule'
 import api from './api'
 import searchEngin from './searchengin'
 import statistics from './statistics'
-import { serverConfig } from './config'
 import { normalizePort } from './util/stringUtil'
+import nuxtConfig from '../nuxt.config.js'
+
+const { serverConfig } = require('./config')
 
 /**
  * 爬虫任务 + 爬虫后日志分析
  *
  */
-function timer () {
-  searchEngin()
-    .then(() => statistics.collect())
-    .then(() => {
-      setTimeout(() => {
-        timer()
-      }, 60 * 1000 * 10)
-    })
-}
-timer()
+// function timer () {
+//   searchEngin()
+//     .then(() => statistics.collect())
+//     .then(() => {
+//       setTimeout(() => {
+//         timer()
+//       }, 60 * 1000 * 10)
+//     })
+// }
+// timer()
 
 /**
  * 分析定时任务
  */
-schedule.scheduleJob('0 10 0 * * *', () => {
-  statistics.timeTask()
-})
+// schedule.scheduleJob('0 10 0 * * *', () => {
+//   statistics.timeTask()
+// })
 
 var app = express()
 
@@ -42,14 +44,13 @@ app.use(cookieParser())
 app.use('/api', api)
 
 // Import and Set Nuxt.js options
-let config = require('../nuxt.config.js')
-config.dev = !(process.env.NODE_ENV === 'production')
+nuxtConfig.dev = !(process.env.NODE_ENV === 'production')
 
 // Init Nuxt.js
-const nuxt = new Nuxt(config)
+const nuxt = new Nuxt(nuxtConfig)
 
 // Build only in dev mode
-if (config.dev) {
+if (nuxtConfig.dev) {
   const builder = new Builder(nuxt)
   builder.build()
 }

@@ -4,8 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "backpack dev",
-    "build": "nuxt build && backpack build",
-    "start": "cross-env NODE_ENV=prod node build/main.js",
+    "build": "cross-env NODE_ENV=production nuxt build && backpack build",
+    "start": "cross-env NODE_ENV=production node build/main.js",
+    "prod_start": "npm run build && pm2 start PM2.json",
+    "prod_restart": "npm run build && pm2 restart livewindow",
     "precommit": "npm run lint",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore ."
   },
@@ -42,6 +44,7 @@
     "eslint-plugin-node": "^5.1.1",
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-standard": "^3.0.1",
+    "pm2": "^2.10.4",
     "prettier": "^1.12.1"
   }
 }

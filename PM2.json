@@ -1,14 +1,11 @@
 {
   "apps" : [{
     "name"        : "livewindow",
-    "script"      : "bin/www",
+    "script"      : "build/main.js",
     "watch"       : true,
     "merge_logs"  : true,
     "env": {
-      "NODE_ENV": "development"
-    },
-    "env_production" : {
       "NODE_ENV": "production"
-    },
+    }
   }]
 }

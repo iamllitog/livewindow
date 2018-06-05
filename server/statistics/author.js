@@ -1,5 +1,5 @@
 import mysqlUtil from '../util/mysqlUtil'
-import { platforms } from '../config'
+const { platforms } = require('../config')
 
 // 在reporttemp_author（字段：platform，author，timecount）表中找到 对应平台&今日 的数据
 // 无此数据 新建此条数据

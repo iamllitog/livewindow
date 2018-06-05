@@ -13,7 +13,7 @@ module.exports = {
       { hid: 'description', name: 'description', content: '网络直播平台爬虫' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', href: '/favicon.ico' }
     ]
   },
   router: {

@@ -1,6 +1,7 @@
 import express from 'express'
 import mysqlUtil from '../util/mysqlUtil'
 import statisticsAuthor from '../statistics/author'
+import request from 'request'
 const router = express.Router()
 
 router.get('/lives', (req, res, next) => {
@@ -74,6 +75,10 @@ router.get('/report/dayactiveanchor', (req, res, next) => {
         }
       })
     })
+})
+
+router.get('/liveimage', (req, res, next) => {
+  request(req.query.src).pipe(res)
 })
 
 export default router

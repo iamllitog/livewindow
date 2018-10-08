@@ -104,7 +104,8 @@ export default {
         {label: '战旗', value: 'zhanqi'},
         {label: '龙珠', value: 'longzhu'},
         {label: '火猫', value: 'huomao'},
-        {label: '虎牙', value: 'huya'}
+        {label: '虎牙', value: 'huya'},
+        {label: 'B站', value: 'bilibili'}
       ]
     }
   },

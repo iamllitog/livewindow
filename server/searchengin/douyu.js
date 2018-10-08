@@ -33,7 +33,6 @@ const task = {
             platform: 'douyu'
           })
         })
-
         canTurnPage = videos.length >= 120 && pageNum <= 150
         return task.store(videos)
       })

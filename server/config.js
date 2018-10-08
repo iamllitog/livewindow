@@ -20,6 +20,9 @@ module.exports = {
   }, {
     name: 'huya',
     chtext: '虎牙'
+  }, {
+    name: 'bilibili',
+    chtext: 'B站'
   }],
   mysqlConfig: {
     development: {

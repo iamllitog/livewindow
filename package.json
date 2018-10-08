@@ -26,6 +26,7 @@
     "mysql": "^2.14.0",
     "node-schedule": "^1.2.4",
     "nuxt": "^1.4.0",
+    "request": "^2.88.0",
     "serve-favicon": "~2.4.2",
     "source-map-support": "^0.4.15",
     "superagent": "^3.5.2",

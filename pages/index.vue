@@ -36,7 +36,7 @@
                     <span class="imgbox">
                         <span class="imgbox-corner-mark"></span>
                         <b></b>
-                        <img v-lazy="live.imageUrl" style="display: block;">
+                        <img v-lazy="'/api/liveimage?src='+live.imageUrl" style="display: block;" crossorigin="anonymous">
                         <img class="platform-logo" :src="'/platform_logo/'+live.platform+'.png'">
                     </span>
                     <div class="mes">

@@ -25,7 +25,7 @@ const task = {
           if (video.online >= 100) {
             videos.push({
               title: video.title,
-              url: `${BASE_URL}/${video.link}`,
+              url: `${BASE_URL}${video.link}`,
               imageUrl: video.system_cover,
               author: video.uname,
               personNum: video.online,
@@ -36,7 +36,6 @@ const task = {
         })
 
         canTurnPage = datalist.length <= videos.length
-        console.log(videos.length);
         return task.store(videos)
       })
       .then(() => {

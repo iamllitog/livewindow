@@ -33,7 +33,6 @@ const task = {
             platform: 'huya'
           })
         })
-
         canTurnPage = videos.length >= 120 && pageNum <= 200
         return task.store(videos)
       })

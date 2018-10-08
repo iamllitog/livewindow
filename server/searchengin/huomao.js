@@ -34,7 +34,6 @@ const task = {
             })
           }
         })
-
         canTurnPage = channelList.length <= videos.length
         return task.store(videos)
       })

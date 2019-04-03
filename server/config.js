@@ -5,13 +5,16 @@ module.exports = {
   }, {
     name: 'huomao',
     chtext: '火猫'
-  }, {
-    name: 'xiongmao',
-    chtext: '熊猫'
-  }, {
-    name: 'quanmin',
-    chtext: '全民'
-  }, {
+  },
+  // {
+  //   name: 'xiongmao',
+  //   chtext: '熊猫'
+  // },
+  // {
+  //   name: 'quanmin',
+  //   chtext: '全民'
+  // },
+  {
     name: 'zhanqi',
     chtext: '战旗'
   }, {
@@ -25,7 +28,7 @@ module.exports = {
     chtext: 'B站'
   }],
   mysqlConfig: {
-    development: {
+    production: {
       user: 'root',
       host: 'bj-cdb-mmuzt5tx.sql.tencentcdb.com',
       port: 63329,
@@ -33,12 +36,12 @@ module.exports = {
       database: 'livewindow',
       charset: 'utf8mb4'
     },
-    production: {
+    development: {
       user: 'root',
-      host: '172.21.0.17',
-      port: 3306,
+      host: 'bj-cdb-mmuzt5tx.sql.tencentcdb.com',
+      port: 63329,
       password: 'Aa111111',
-      database: 'livewindow',
+      database: 'livewindow-test',
       charset: 'utf8mb4'
     }
   },

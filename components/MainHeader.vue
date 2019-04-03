@@ -6,6 +6,7 @@
             <ul class="pure-menu-list">
                 <li :class="{'pure-menu-selected': path === '/'}" class="pure-menu-item"><nuxt-link to="/" class="pure-menu-link">首页</nuxt-link></li>
                 <li :class="{'pure-menu-selected': path === '/report'}" class="pure-menu-item"><nuxt-link to="/report" class="pure-menu-link">数据分析</nuxt-link></li>
+                <li :class="{'pure-menu-selected': path === '/news'}" class="pure-menu-item"><nuxt-link to="/news" class="pure-menu-link">新闻中心</nuxt-link></li>
                 <li class="pure-menu-item"><a href="javascript:void(0)" @click="payModal = !payModal" class="pure-menu-link">打赏站长</a></li>
             </ul>
             <div class="search-info">

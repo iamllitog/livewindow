@@ -19,6 +19,51 @@ export default {
       })
     })
   },
+  getNews ({pageNum, pageCount}) {
+    return Promise.all([this.getNewsList({pageNum, pageCount}), this.getNewsCount()])
+      .then(([newsRows, countRows]) => {
+        return {
+          news: newsRows,
+          totalCount: countRows[0].count
+        }
+      })
+  },
+  /**
+   * @description 获取新闻列表
+   */
+  getNewsList ({pageNum, pageCount}) {
+    if (isNaN(pageNum) || isNaN(pageCount)) {
+      return Promise.reject('pageNum,pageCount参数需要是数字')
+    }
+    let offset = (pageNum - 1) * pageCount
+    return new Promise((resolve, reject) => {
+      pool.getConnection(function (err, connection) {
+        if (err) { reject(err) } else {
+          connection.query(`SELECT id, title, detailtext, date_format(time, '%Y-%m-%d %H:%i:%s') AS time FROM news ORDER BY time DESC LIMIT ${offset},${pageCount}`, function (error, rows) {
+            if (error) reject(error)
+            else resolve(rows)
+            connection.release()
+          })
+        }
+      })
+    })
+  },
+  /**
+   * @description 获取总新闻数
+   */
+  getNewsCount () {
+    return new Promise((resolve, reject) => {
+      pool.getConnection(function (err, connection) {
+        if (err) { reject(err) } else {
+          connection.query(`SELECT count(*) AS count FROM news`, function (error, rows) {
+            if (error) reject(error)
+            else resolve(rows)
+            connection.release()
+          })
+        }
+      })
+    })
+  },
   getLives ({keyword, pageNum, pageCount, category, platform}) {
     platform = platforms.find(function (val) { return val.name === platform })
     if (!platform) platform = 'allvideos'

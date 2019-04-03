@@ -4,6 +4,24 @@ import statisticsAuthor from '../statistics/author'
 import request from 'request'
 const router = express.Router()
 
+router.get('/news', (req, res, next) => {
+  let pageNum = parseInt(req.query.pageNum)
+  let pageCount = 20
+  if (isNaN(pageNum) || pageNum < 1) {
+    pageNum = 1
+  }
+  mysqlUtil.getNews({pageCount, pageNum})
+    .then(({news, totalCount}) => {
+      res.json({
+        success: 1,
+        data: {
+          news,
+          totalCount
+        }
+      })
+    })
+})
+
 router.get('/lives', (req, res, next) => {
   let pageNum = parseInt(req.query.pageNum)
   let category = req.query.category

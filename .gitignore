@@ -1,5 +1,6 @@
 .vscode/*
 yarn.lock
+server/config.js
 
 # dependencies
 node_modules

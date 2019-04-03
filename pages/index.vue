@@ -99,8 +99,8 @@ export default {
       platformList: [
         {label: '全部平台', value: ''},
         {label: '斗鱼', value: 'douyu'},
-        {label: '全民', value: 'quanmin'},
-        {label: '熊猫', value: 'xiongmao'},
+        // {label: '全民', value: 'quanmin'},
+        // {label: '熊猫', value: 'xiongmao'},
         {label: '战旗', value: 'zhanqi'},
         {label: '龙珠', value: 'longzhu'},
         {label: '火猫', value: 'huomao'},
